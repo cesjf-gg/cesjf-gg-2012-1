@@ -22,23 +22,28 @@
 
    <script>
       var tela=document.getElementById("tela");
+      var tempo_atual= new Date(); 
+      var tempo_anterior = new Date(); 
+      var dt;
       var ctx = tela.getContext("2d");
       var x = 20;
       var vx = 0;
       var y = 40;
       var vy = 8;
-      var ax = 0.5;
+      var ax = 10;
       
-      function desenho(){ 
+      function desenho(){
+         tempo_atual = new Date();
+         dt = (tempo_atual - tempo_anterior) / 1000; 
          ctx.fillStyle = "darkblue";
          ctx.fillRect(0, 0, 640, 480);     
          ctx.fillStyle = "gray";
          ctx.fillRect(x, y, 20, 20);      
          ctx.strokeStyle = "white";
          ctx.strokeRect(x, y, 20, 20);
-         vx +=ax;
-         x+= vx;
-         y+= vy;
+         vx +=ax * dt;
+         x+= vx * dt;
+         y+= vy * dt ;
          if((x > 300 && ax > 0) || (x < 50 && ax < 0)){
             ax = -ax;
             console.log(ax);
@@ -46,10 +51,10 @@
          if((y > 440) || (y < 20)){
             vy = -vy;
          }
-         
+         tempo_anterior = tempo_atual;
 
       }
-      window.setInterval(desenho, 1000/30);
+      window.setInterval(desenho, 1000/60);
    
    </script>
 </body>
