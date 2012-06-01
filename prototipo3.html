@@ -35,6 +35,7 @@
          aceleracao: 0,
          vx: 0,
          vy: 0,
+         raio: 15,
          desenhar: function (ctx){
             ctx.save();
             ctx.translate(jogador.x, jogador.y);
@@ -47,7 +48,7 @@
             ctx.closePath( );
             ctx.stroke();
             ctx.beginPath( );
-            ctx.arc(0,0,15,0,Math.PI * 2,true);
+            ctx.arc(0,0,jogador.raio,0,Math.PI * 2,true);
 
 
             ctx.closePath( );
@@ -87,17 +88,19 @@
          this.ay = 0;
          this.vx = 0;
          this.vy = 40;
+         this.raio = 30;
+         this.colidido = false;
          this.desenhar = function(ctx){
             ctx.save();
          
-            ctx.translate(asteroide.x, asteroide.y);
+            ctx.translate(this.x, this.y);
             ctx.beginPath( );
-            ctx.arc(0,0,15,0,Math.PI * 2,true);
+            ctx.arc(0,0,this.raio,0,Math.PI * 2,true);
 
 
             ctx.closePath( );
             ctx.strokeStyle= "red";
-            if (colisao) {
+            if (this.colidido) {
                ctx.fillStyle="red";
             } else {
                ctx.fillStyle="yellow";
@@ -126,6 +129,10 @@
                this.x = -20;
             }
          };
+         this.colisao = function(alvo) {
+            var d = Math.sqrt(Math.pow((this.x-alvo.x),2) + Math.pow((this.y-alvo.y),2));
+            return d < (this.raio+alvo.raio); 
+         };
       };
      
       var asteroide = new Asteroide();
@@ -141,23 +148,14 @@
          ctx.fillStyle = "gray";
          
          ctx.strokeStyle = "white";
-         
-         //desenha triangulo
-         jogador.desenhar(ctx);
-         jogador.mover();
-         //Desenha Asteroide
-         asteroide.desenhar(ctx);
 
-
-         
-         // Movimento do Asteroide
          asteroide.mover();
+         jogador.mover();
 
-         d = Math.sqrt(Math.pow((asteroide.x-jogador.x),2) + Math.pow((asteroide.y-jogador.y),2));
-         colisao = d < (15+15);
-         
+         asteroide.colidido = asteroide.colisao(jogador);
 
-
+         jogador.desenhar(ctx);
+         asteroide.desenhar(ctx);
 
          tempo_anterior = tempo_atual;
 
@@ -167,7 +165,6 @@
       document.addEventListener("keydown", tecla_pressionada);
       document.addEventListener("keyup", tecla_solta)
       function tecla_pressionada(evento){
-         console.log(evento.keyCode);
          if (evento.keyCode == 39){
             jogador.vang = 120;
          } else if(evento.keyCode == 37){
