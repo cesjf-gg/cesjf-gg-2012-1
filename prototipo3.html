@@ -34,7 +34,28 @@
          vang: 0,      
          aceleracao: 0,
          vx: 0,
-         vy: 0
+         vy: 0,
+         desenhar: function (ctx){
+            ctx.save();
+            ctx.translate(jogador.x, jogador.y);
+            ctx.rotate(jogador.angulo * 2 * Math.PI / 360);         
+            ctx.beginPath( );
+            ctx.moveTo(0, -10);
+            ctx.lineTo(8, 10);
+            ctx.lineTo(-8, 10);
+            ctx.lineTo(0, -10);
+            ctx.closePath( );
+            ctx.stroke();
+            ctx.beginPath( );
+            ctx.arc(0,0,15,0,Math.PI * 2,true);
+
+
+            ctx.closePath( );
+            ctx.strokeStyle= "yellow";
+
+            ctx.stroke();
+            ctx.restore();
+         },
       };
       
       function Asteroide(){
@@ -44,6 +65,28 @@
          this.ay = 0;
          this.vx = 0;
          this.vy = 40;
+         this.desenhar = function(ctx){
+            ctx.save();
+         
+            ctx.translate(asteroide.x, asteroide.y);
+            ctx.beginPath( );
+            ctx.arc(0,0,15,0,Math.PI * 2,true);
+
+
+            ctx.closePath( );
+            ctx.strokeStyle= "red";
+            if (colisao) {
+               ctx.fillStyle="red";
+            } else {
+               ctx.fillStyle="yellow";
+            }
+            
+            ctx.fill();
+            ctx.stroke();
+            
+            ctx.restore();
+
+         };
       };
      
       var asteroide = new Asteroide();
@@ -61,46 +104,10 @@
          ctx.strokeStyle = "white";
          
          //desenha triangulo
-         ctx.save();
-         ctx.translate(jogador.x, jogador.y);
-         ctx.rotate(jogador.angulo * 2 * Math.PI / 360);         
-         ctx.beginPath( );
-         ctx.moveTo(0, -10);
-         ctx.lineTo(8, 10);
-         ctx.lineTo(-8, 10);
-         ctx.lineTo(0, -10);
-         ctx.closePath( );
-         ctx.stroke();
-         ctx.beginPath( );
-         ctx.arc(0,0,15,0,Math.PI * 2,true);
-
-
-         ctx.closePath( );
-         ctx.strokeStyle= "yellow";
-
-         ctx.stroke();
-         ctx.restore();
+         jogador.desenhar(ctx);
 
          //Desenha Asteroide
-         ctx.save();
-         
-         ctx.translate(asteroide.x, asteroide.y);
-         ctx.beginPath( );
-         ctx.arc(0,0,15,0,Math.PI * 2,true);
-
-
-         ctx.closePath( );
-         ctx.strokeStyle= "red";
-         if (colisao) {
-            ctx.fillStyle="red";
-         } else {
-            ctx.fillStyle="yellow";
-         }
-         
-         ctx.fill();
-         ctx.stroke();
-         
-         ctx.restore();
+         asteroide.desenhar(ctx);
 
          
 
