@@ -37,14 +37,16 @@
          vy: 0
       };
       
-
-      var ix = 200;
-      var iy = 0;
-      var iax = 0;
-      var iay = 0;
-      var ivx = 0;
-      var ivy = 40;
-
+      function Asteroide(){
+         this.x = 200;          
+         this.y = 0;
+         this.ax = 0;
+         this.ay = 0;
+         this.vx = 0;
+         this.vy = 40;
+      };
+     
+      var asteroide = new Asteroide();
       var d;
       var colisao = 0;    
       
@@ -82,7 +84,7 @@
          //Desenha Asteroide
          ctx.save();
          
-         ctx.translate(ix, iy);
+         ctx.translate(asteroide.x, asteroide.y);
          ctx.beginPath( );
          ctx.arc(0,0,15,0,Math.PI * 2,true);
 
@@ -124,23 +126,23 @@
          }
          
          // Movimento do Asteroide
-         ix += ivx*dt;
-         iy += ivy*dt;
+         asteroide.x += asteroide.vx*dt;
+         asteroide.y += asteroide.vy*dt;
 
-         if(iy<-20) {
-            iy = 500;
+         if(asteroide.y<-20) {
+            asteroide.y = 500;
          }
-         if(iy>500) {
-            iy = -20;
+         if(asteroide.y>500) {
+            asteroide.y = -20;
          }
-         if(ix<-20) {
-            ix = 660;
+         if(asteroide.x<-20) {
+            asteroide.x = 660;
          }
-         if(ix>660) {
-            ix = -20;
+         if(asteroide.x>660) {
+            asteroide.x = -20;
          }
 
-         d = Math.sqrt(Math.pow((ix-jogador.x),2) + Math.pow((iy-jogador.y),2));
+         d = Math.sqrt(Math.pow((asteroide.x-jogador.x),2) + Math.pow((asteroide.y-jogador.y),2));
          colisao = d < (15+15);
          
 
