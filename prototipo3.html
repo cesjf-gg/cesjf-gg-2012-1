@@ -56,6 +56,28 @@
             ctx.stroke();
             ctx.restore();
          },
+
+         mover: function (){
+            this.angulo += this.vang * dt;
+            this.x += this.vx;
+            this.y -= this.vy;
+            this.vx += this.aceleracao*Math.sin(this.angulo * 2 * Math.PI / 360)*dt;
+            this.vy += this.aceleracao*Math.cos(this.angulo * 2 * Math.PI / 360)*dt;
+
+            if(this.y<-20) {
+               this.y = 500;
+            }
+            if(this.y>500) {
+               this.y = -20;
+            }
+            if(this.x<-20) {
+               this.x = 660;
+            }
+            if(this.x>660) {
+               this.x = -20;
+            }
+            
+         },
       };
       
       function Asteroide(){
@@ -87,6 +109,23 @@
             ctx.restore();
 
          };
+         this.mover = function() {
+            this.x += this.vx*dt;
+            this.y += this.vy*dt;
+
+            if(this.y<-20) {
+               this.y = 500;
+            }
+            if(this.y>500) {
+               this.y = -20;
+            }
+            if(this.x<-20) {
+               this.x = 660;
+            }
+            if(this.x>660) {
+               this.x = -20;
+            }
+         };
       };
      
       var asteroide = new Asteroide();
@@ -105,49 +144,14 @@
          
          //desenha triangulo
          jogador.desenhar(ctx);
-
+         jogador.mover();
          //Desenha Asteroide
          asteroide.desenhar(ctx);
 
-         
 
-
-
-         jogador.angulo += jogador.vang * dt;
-         jogador.x += jogador.vx;
-         jogador.y -= jogador.vy;
-         jogador.vx += jogador.aceleracao*Math.sin(jogador.angulo * 2 * Math.PI / 360)*dt;
-         jogador.vy += jogador.aceleracao*Math.cos(jogador.angulo * 2 * Math.PI / 360)*dt;
-
-         if(jogador.y<-20) {
-            jogador.y = 500;
-         }
-         if(jogador.y>500) {
-            jogador.y = -20;
-         }
-         if(jogador.x<-20) {
-            jogador.x = 660;
-         }
-         if(jogador.x>660) {
-            jogador.x = -20;
-         }
          
          // Movimento do Asteroide
-         asteroide.x += asteroide.vx*dt;
-         asteroide.y += asteroide.vy*dt;
-
-         if(asteroide.y<-20) {
-            asteroide.y = 500;
-         }
-         if(asteroide.y>500) {
-            asteroide.y = -20;
-         }
-         if(asteroide.x<-20) {
-            asteroide.x = 660;
-         }
-         if(asteroide.x>660) {
-            asteroide.x = -20;
-         }
+         asteroide.mover();
 
          d = Math.sqrt(Math.pow((asteroide.x-jogador.x),2) + Math.pow((asteroide.y-jogador.y),2));
          colisao = d < (15+15);
