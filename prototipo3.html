@@ -26,13 +26,17 @@
       var tempo_anterior = new Date(); 
       var dt;
       var ctx = tela.getContext("2d");
-      var x = 100;
-      var y = 100;
-      var angulo = 0;
-      var vang = 0;      
-      var aceleracao = 0;
-      var vx = 0;
-      var vy = 0;
+
+      var jogador = {
+         x: 100,
+         y: 100,
+         angulo: 0,
+         vang: 0,      
+         aceleracao: 0,
+         vx: 0,
+         vy: 0
+      };
+      
 
       var ix = 200;
       var iy = 0;
@@ -51,14 +55,13 @@
          ctx.fillStyle = "darkblue";
          ctx.fillRect(0, 0, 640, 480);     
          ctx.fillStyle = "gray";
-         //ctx.fillRect(x, y, 20, 20);      
+         
          ctx.strokeStyle = "white";
-         //ctx.strokeRect(x, y, 20, 20);
          
          //desenha triangulo
          ctx.save();
-         ctx.translate(x, y);
-         ctx.rotate(angulo * 2 * Math.PI / 360);         
+         ctx.translate(jogador.x, jogador.y);
+         ctx.rotate(jogador.angulo * 2 * Math.PI / 360);         
          ctx.beginPath( );
          ctx.moveTo(0, -10);
          ctx.lineTo(8, 10);
@@ -101,23 +104,23 @@
 
 
 
-         angulo += vang * dt;
-         x += vx;
-         y -= vy;
-         vx += aceleracao*Math.sin(angulo * 2 * Math.PI / 360)*dt;
-         vy += aceleracao*Math.cos(angulo * 2 * Math.PI / 360)*dt;
+         jogador.angulo += jogador.vang * dt;
+         jogador.x += jogador.vx;
+         jogador.y -= jogador.vy;
+         jogador.vx += jogador.aceleracao*Math.sin(jogador.angulo * 2 * Math.PI / 360)*dt;
+         jogador.vy += jogador.aceleracao*Math.cos(jogador.angulo * 2 * Math.PI / 360)*dt;
 
-         if(y<-20) {
-            y = 500;
+         if(jogador.y<-20) {
+            jogador.y = 500;
          }
-         if(y>500) {
-            y = -20;
+         if(jogador.y>500) {
+            jogador.y = -20;
          }
-         if(x<-20) {
-            x = 660;
+         if(jogador.x<-20) {
+            jogador.x = 660;
          }
-         if(x>660) {
-            x = -20;
+         if(jogador.x>660) {
+            jogador.x = -20;
          }
          
          // Movimento do Asteroide
@@ -137,7 +140,7 @@
             ix = -20;
          }
 
-         d = Math.sqrt(Math.pow((ix-x),2) + Math.pow((iy-y),2));
+         d = Math.sqrt(Math.pow((ix-jogador.x),2) + Math.pow((iy-jogador.y),2));
          colisao = d < (15+15);
          
 
@@ -153,26 +156,26 @@
       function tecla_pressionada(evento){
          console.log(evento.keyCode);
          if (evento.keyCode == 39){
-            vang = 120;
+            jogador.vang = 120;
          } else if(evento.keyCode == 37){
-            vang = -120;
+            jogador.vang = -120;
          }
          if(evento.keyCode == 38){
-            aceleracao =  1;
+            jogador.aceleracao =  1;
          }  else if(evento.keyCode == 40){
-            aceleracao = 0;
+            jogador.aceleracao = 0;
          }             
       }
       function tecla_solta(evento){
          if (evento.keyCode == 39){
-            vang = 0;
+            jogador.vang = 0;
          } else if(evento.keyCode == 37){
-            vang = 0;
+            jogador.vang = 0;
          }
          if(evento.keyCode == 38){
-            aceleracao = 0;
+            jogador.aceleracao = 0;
          } else if(evento.keyCode == 40){
-            aceleracao = 0;
+            jogador.aceleracao = 0;
          }
       }
          
