@@ -26,6 +26,11 @@
       var tempo_anterior = new Date(); 
       var dt;
       var ctx = tela.getContext("2d");
+      var naveImg = new Image();
+      var desenhaLimites = false;
+      naveImg.src = "ships_human_0.png";
+      var asteroidImg = new Image();
+      asteroidImg.src = "asteroid_strip64.png";
 
       var jogador = {
          x: 100,
@@ -36,25 +41,30 @@
          vx: 0,
          vy: 0,
          raio: 15,
+         quadro: 0,
          desenhar: function (ctx){
             ctx.save();
             ctx.translate(jogador.x, jogador.y);
             ctx.rotate(jogador.angulo * 2 * Math.PI / 360);         
-            ctx.beginPath( );
-            ctx.moveTo(0, -10);
-            ctx.lineTo(8, 10);
-            ctx.lineTo(-8, 10);
-            ctx.lineTo(0, -10);
-            ctx.closePath( );
-            ctx.stroke();
-            ctx.beginPath( );
-            ctx.arc(0,0,jogador.raio,0,Math.PI * 2,true);
+            ctx.drawImage(naveImg, 64*Math.floor(jogador.quadro), 33, 64, 47,
+                  -jogador.raio, -jogador.raio, jogador.raio*2, jogador.raio*2);
+            
+            
+            if(desenhaLimites){
+               ctx.beginPath( );
+               ctx.moveTo(0, -10);
+               ctx.lineTo(8, 10);
+               ctx.lineTo(-8, 10);
+               ctx.lineTo(0, -10);
+               ctx.closePath( );
+               ctx.stroke();
 
-
-            ctx.closePath( );
-            ctx.strokeStyle= "yellow";
-
-            ctx.stroke();
+               ctx.beginPath( );
+               ctx.arc(0,0,jogador.raio,0,Math.PI * 2,true);
+               ctx.closePath( );
+               ctx.strokeStyle= "yellow";
+               ctx.stroke();
+            }
             ctx.restore();
          },
 
@@ -90,25 +100,30 @@
          this.vy = 40;
          this.raio = 30;
          this.colidido = false;
+         this.quadro = 0;
          this.desenhar = function(ctx){
             ctx.save();
          
             ctx.translate(this.x, this.y);
-            ctx.beginPath( );
-            ctx.arc(0,0,this.raio,0,Math.PI * 2,true);
-
-
-            ctx.closePath( );
-            ctx.strokeStyle= "red";
-            if (this.colidido) {
-               ctx.fillStyle="red";
-            } else {
-               ctx.fillStyle="yellow";
+            ctx.drawImage(asteroidImg, Math.floor(this.quadro)*128, 0, 128, 128,
+                      -this.raio, -this.raio, 2*this.raio, 2*this.raio);
+            this.quadro+=10*dt;
+            if(this.quadro>64){
+               this.quadro = 0;
             }
-            
-            ctx.fill();
-            ctx.stroke();
-            
+            if(desenhaLimites){
+               ctx.beginPath( );
+               ctx.arc(0,0,this.raio,0,Math.PI * 2,true);
+               ctx.closePath( );
+               ctx.strokeStyle= "red";
+               if (this.colidido) {
+                  ctx.fillStyle="red";
+               } else {
+                  ctx.fillStyle="yellow";
+               }
+               ctx.fill();
+               ctx.stroke();
+            }            
             ctx.restore();
 
          };
@@ -172,6 +187,7 @@
          }
          if(evento.keyCode == 38){
             jogador.aceleracao =  1;
+            jogador.quadro = 1;
          }  else if(evento.keyCode == 40){
             jogador.aceleracao = 0;
          }             
@@ -184,8 +200,10 @@
          }
          if(evento.keyCode == 38){
             jogador.aceleracao = 0;
+            jogador.quadro = 0;
          } else if(evento.keyCode == 40){
             jogador.aceleracao = 0;
+            jogador.quadro = 0;
          }
       }
          
