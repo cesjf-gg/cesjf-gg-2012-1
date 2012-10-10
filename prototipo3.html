@@ -6,7 +6,7 @@
    <title>Protótipo 3</title>
    <style>
       body{
-         background-color: black;
+         background-color: white;
          color: white;
       }
    
@@ -15,6 +15,7 @@
       }
       
    </style>
+
 </head>
 <body>
    <h1>CESJF-GG: Protótipo 3</h1>
@@ -31,177 +32,24 @@
       naveImg.src = "ships_human_0.png";
       var asteroidImg = new Image();
       asteroidImg.src = "asteroid_strip64.png";
+      var buracoNegroImg = new Image();
+      buracoNegroImg.src = "blackhole.png";
 
-      var jogador = {
-         x: 100,
-         y: 100,
-         angulo: 0,
-         vang: 0,      
-         aceleracao: 0,
-         vx: 0,
-         vy: 0,
-         raio: 15,
-         quadro: 0,
-         desenhar: function (ctx){
-            ctx.save();
-            ctx.translate(jogador.x, jogador.y);
-            ctx.rotate(jogador.angulo * 2 * Math.PI / 360);         
-            ctx.drawImage(naveImg, 64*Math.floor(jogador.quadro), 33, 64, 47,
-                  -jogador.raio, -jogador.raio, jogador.raio*2, jogador.raio*2);
-            
-            
-            if(desenhaLimites){
-               ctx.beginPath( );
-               ctx.moveTo(0, -10);
-               ctx.lineTo(8, 10);
-               ctx.lineTo(-8, 10);
-               ctx.lineTo(0, -10);
-               ctx.closePath( );
-               ctx.stroke();
 
-               ctx.beginPath( );
-               ctx.arc(0,0,jogador.raio,0,Math.PI * 2,true);
-               ctx.closePath( );
-               ctx.strokeStyle= "yellow";
-               ctx.stroke();
-            }
-            ctx.restore();
-         },
+</script>
 
-         mover: function (){
-            this.angulo += this.vang * dt;
-            this.x += this.vx;
-            this.y -= this.vy;
-
-            var r = Math.sqrt(Math.pow(this.x - buracoNegro.x,2)+             Math.pow(this.y - buracoNegro.y,2));
-            var atx = -100 * (this.x - buracoNegro.x)/(r*r);
-            var aty =  100 * (this.y - buracoNegro.y)/(r*r);
-            this.vx += this.aceleracao*Math.sin(this.angulo * 2 * Math.PI / 360)*dt + atx * dt;
-            this.vy += this.aceleracao*Math.cos(this.angulo * 2 * Math.PI / 360)*dt + aty * dt;
-
-            if(this.y<-20) {
-               this.y = 500;
-            }
-            if(this.y>500) {
-               this.y = -20;
-            }
-            if(this.x<-20) {
-               this.x = 660;
-            }
-            if(this.x>660) {
-               this.x = -20;
-            }
-            
-         },
-      };
-      
-      function Asteroide(){
-         this.x = 200;          
-         this.y = 0;
-         this.ax = 0;
-         this.ay = 0;
-         this.vx = 0;
-         this.vy = 0;
-         this.raio = 30;
-         this.colidido = false;
-         this.quadro = 0;
-         this.desenhar = function(ctx){
-            ctx.save();
-         
-            ctx.translate(this.x, this.y);
-            ctx.drawImage(asteroidImg, Math.floor(this.quadro)*128, 0, 128, 128,
-                      -this.raio, -this.raio, 2*this.raio, 2*this.raio);
-            this.quadro+=10*dt;
-            if(this.quadro>64){
-               this.quadro = 0;
-            }
-            if(desenhaLimites){
-               ctx.beginPath( );
-               ctx.arc(0,0,this.raio,0,Math.PI * 2,true);
-               ctx.closePath( );
-               ctx.strokeStyle= "red";
-               if (this.colidido) {
-                  ctx.fillStyle="red";
-               } else {
-                  ctx.fillStyle="yellow";
-               }
-               ctx.fill();
-               ctx.stroke();
-            }            
-            ctx.restore();
-
-         };
-         this.mover = function() {
-            var r = Math.sqrt(Math.pow(this.x - buracoNegro.x,2)+             Math.pow(this.y - buracoNegro.y,2));
-            this.ax = -1000 * (this.x - buracoNegro.x)/(r*r);
-            this.ay = - 1000 * (this.y - buracoNegro.y)/(r*r);
-            this.vx += this.ax*dt;
-            this.vy += this.ay*dt;
-            this.x += this.vx*dt;
-            this.y += this.vy*dt;
-
-            /*if(this.y<-20) {
-               this.y = 500;
-            }
-            if(this.y>500) {
-               this.y = -20;
-            }
-            if(this.x<-20) {
-               this.x = 660;
-            }
-            if(this.x>660) {
-               this.x = -20;
-            }*/
-         };
-         this.colisao = function(alvo) {
-            var d = Math.sqrt(Math.pow((this.x-alvo.x),2) + Math.pow((this.y-alvo.y),2));
-            return d < (this.raio+alvo.raio); 
-         };
-      };
-      function BuracoNegro(){
-         this.x = 600;
-         this.y = 250;
-         this.raio = 50;
-         this.quadro = 0;
-
-         this.desenhar = function(ctx) {
-            ctx.save();
-            ctx.translate(this.x, this.y);
-            ctx.drawImage(asteroidImg, Math.floor        (this.quadro)*128, 0, 128, 128,
-                      -this.raio, -this.raio, 2*this.raio, 2*this.raio);
-            this.quadro+=10*dt;
-            if(this.quadro>64){
-               this.quadro = 0;
-            }
-            if(desenhaLimites){
-               ctx.beginPath( );
-               ctx.arc(0,0,this.raio,0,Math.PI * 2,true);
-               ctx.closePath( );
-               ctx.strokeStyle= "red";
-               if (this.colidido) {
-                  ctx.fillStyle="red";
-               } else {
-                  ctx.fillStyle="yellow";
-               }
-               ctx.fill();
-               ctx.stroke();
-            }            
-            ctx.restore();
-
-         };
-      };
-
-     
+<script src = "jogador.js"></script> 
+<script src="asteroide.js"></script>
+<script src="buraco_negro.js"></script>
+<script>
       var asteroide = new Asteroide();
       var buracoNegro = new BuracoNegro();
       var d;
-      var colisao = 0;    
-      
-
+      var colisao = 0;
       function desenho(){
          tempo_atual = new Date();
          dt = (tempo_atual - tempo_anterior) / 1000; 
-         ctx.fillStyle = "darkblue";
+         ctx.fillStyle = "black";
          ctx.fillRect(0, 0, 640, 480);     
          ctx.fillStyle = "gray";
          
@@ -212,9 +60,9 @@
 
          asteroide.colidido = asteroide.colisao(jogador);
 
+         buracoNegro.desenhar(ctx);
          jogador.desenhar(ctx);
          asteroide.desenhar(ctx);
-         buracoNegro.desenhar(ctx);
          tempo_anterior = tempo_atual;
 
       }
