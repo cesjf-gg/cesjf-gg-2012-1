@@ -2,9 +2,14 @@ function BuracoNegro(){
          this.angulo = 0;
          this.x = 40;
          this.y = 250;
-         this.raio = 150;
+         this.raio = 15;
          this.quadro = 0;
          this.vang = 20;
+
+         this.colisao = function(alvo) {
+            var d = Math.sqrt(Math.pow((this.x-alvo.x),2) + Math.pow((this.y-alvo.y),2));
+            return d < (this.raio+alvo.raio); 
+         };
 
          this.desenhar = function(ctx) {
 
@@ -12,7 +17,7 @@ function BuracoNegro(){
             ctx.save();
             ctx.translate(this.x, this.y);
             ctx.rotate(this.angulo * 2 * Math.PI / 360);
-            ctx.drawImage(buracoNegroImg, -this.raio, -this.raio, 2*this.raio, 2*this.raio);
+            ctx.drawImage(buracoNegroImg, -150,-150,300,300);
             this.quadro+=10*dt;
             if(this.quadro>64){
                this.quadro = 0;

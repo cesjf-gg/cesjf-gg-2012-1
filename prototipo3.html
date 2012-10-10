@@ -57,7 +57,22 @@
 
          asteroide.mover();
          jogador.mover();
+         if(buracoNegro.colisao(jogador)){
+            jogador.x = 600;
+            jogador.y = 300;
+            jogador.vx = 00;
+            jogador.vy = 00;
+            jogador.angulo = -90;
+            jogador.aceleracao = 0;
 
+         }; 
+         if(buracoNegro.colisao(asteroide)){
+            asteroide.x = 300;
+            asteroide.y = -50;
+            asteroide.vx = 10*(Math.random()*2-1);
+            asteroide.vy = 10*(Math.random()*2);
+         
+         };
          asteroide.colidido = asteroide.colisao(jogador);
 
          buracoNegro.desenhar(ctx);
