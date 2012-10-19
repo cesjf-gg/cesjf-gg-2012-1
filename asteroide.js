@@ -8,13 +8,14 @@ function Asteroide(){
          this.raio = 30;
          this.colidido = false;
          this.quadro = 0;
+         this.animacao = 10;
          this.desenhar = function(ctx){
             ctx.save();
          
             ctx.translate(this.x, this.y);
             ctx.drawImage(asteroidImg, Math.floor(this.quadro)*128, 0, 128, 128,
                       -this.raio, -this.raio, 2*this.raio, 2*this.raio);
-            this.quadro+=10*dt;
+            this.quadro += this.animacao*dt;
             if(this.quadro>64){
                this.quadro = 0;
             }
@@ -56,8 +57,23 @@ function Asteroide(){
                this.x = -20;
             }*/
          };
+
          this.colisao = function(alvo) {
             var d = Math.sqrt(Math.pow((this.x-alvo.x),2) + Math.pow((this.y-alvo.y),2));
             return d < (this.raio+alvo.raio); 
          };
+
+         this.inicia = function() {
+            this.x = 100 + Math.random()*400;
+            if (i%2==0){ 
+               this.y = -50 - Math.random()*50;
+            }
+            else{
+               this.y  = 530 + Math.random()*50;
+            }
+            this.quadro = Math.random()*128;
+            this.animacao = Math.random()*10+10;
+         };
+
       };
+      

@@ -42,7 +42,13 @@
 <script src="asteroide.js"></script>
 <script src="buraco_negro.js"></script>
 <script>
-      var asteroide = new Asteroide();
+      var asteroide =[];
+      for (var i = 0; i<4; i++)
+         {
+      asteroide[i] = new Asteroide();
+      asteroide[i].inicia();
+      };
+      
       var buracoNegro = new BuracoNegro();
       var d;
       var colisao = 0;
@@ -55,7 +61,11 @@
          
          ctx.strokeStyle = "white";
 
-         asteroide.mover();
+         for (var i = 0; i<4; i++)
+         {
+            asteroide[i].mover();
+         };
+         
          jogador.mover();
          if(buracoNegro.colisao(jogador)){
             jogador.x = 600;
@@ -66,18 +76,24 @@
             jogador.aceleracao = 0;
 
          }; 
-         if(buracoNegro.colisao(asteroide)){
-            asteroide.x = 300;
-            asteroide.y = -50;
-            asteroide.vx = 10*(Math.random()*2-1);
-            asteroide.vy = 10*(Math.random()*2);
-         
-         };
-         asteroide.colidido = asteroide.colisao(jogador);
 
          buracoNegro.desenhar(ctx);
          jogador.desenhar(ctx);
-         asteroide.desenhar(ctx);
+
+         for (var i = 0; i<4; i++)
+         {
+            if(buracoNegro.colisao(asteroide[i])){
+               asteroide[i].inicia();
+            
+            };
+
+            asteroide[i].colidido = asteroide[i].colisao(jogador);
+            asteroide[i].desenhar(ctx);
+         };
+         
+         
+
+
          tempo_anterior = tempo_atual;
 
       }
