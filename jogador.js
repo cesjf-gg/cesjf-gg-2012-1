@@ -1,7 +1,7 @@
 var jogador = {
    x: 600,
    y: 300,
-   angulo: -90,
+   angulo: 180,
    vang: 0,      
    aceleracao: 0,
    vx: 0,
@@ -12,7 +12,7 @@ var jogador = {
       ctx.save();
       ctx.translate(jogador.x, jogador.y);
       ctx.save();
-      ctx.rotate(jogador.angulo * 2 * Math.PI / 360);         
+      ctx.rotate((jogador.angulo+90) * GRAD_TO_RAD);         
       ctx.drawImage(naveImg, 64*Math.floor(jogador.quadro), 33, 64, 47,
             -jogador.raio, -jogador.raio, jogador.raio*2, jogador.raio*2);
       
@@ -68,8 +68,8 @@ var jogador = {
       var r = Math.sqrt(Math.pow(this.x - buracoNegro.x,2)+             Math.pow(this.y - buracoNegro.y,2));
       var atx = -50 * (this.x - buracoNegro.x)/(r*r);
       var aty =  50 * (this.y - buracoNegro.y)/(r*r);
-      this.vx += this.aceleracao*Math.sin(this.angulo * 2 * Math.PI / 360)*dt + atx * dt;
-      this.vy += this.aceleracao*Math.cos(this.angulo * 2 * Math.PI / 360)*dt + aty * dt;
+      this.vx += this.aceleracao*Math.cos(this.angulo * GRAD_TO_RAD)*dt + atx * dt;
+      this.vy -= this.aceleracao*Math.sin(this.angulo * GRAD_TO_RAD)*dt - aty * dt;
 
       if(this.y<-20) {
          this.y = 500;
@@ -100,11 +100,12 @@ var jogador = {
    },
 
    direcao: function(objeto) {
-      var x1 = Math.sin((this.angulo + 90)* 2 * Math.PI / 360);
-      var y1 = Math.cos((this.angulo + 90)* 2 * Math.PI / 360);
-      var x2 = this.x - objeto.x;
-      var y2 = this.y - objeto.y;
-      var p = x1 * x2 + y1 * y2;
+      var x1 = Math.cos((this.angulo)* GRAD_TO_RAD);
+      var y1 = Math.sin((this.angulo)* GRAD_TO_RAD);
+      var x2 = objeto.x - this.x;
+      var y2 = objeto.y - this.y;
+      var n2 = Math.sqrt(x2*x2+y2*y2);
+      var p = x1 * x2/n2 + y1 * y2/n2;
       return p;
 
 

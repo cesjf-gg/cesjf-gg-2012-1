@@ -45,12 +45,16 @@
 <script src="buraco_negro.js"></script>
 <script src="boom.js"></script>
 <script>
+      var GRAD_TO_RAD = 2*Math.PI/360;
       var asteroide =[];
       for (var i = 0; i<4; i++)
          {
       asteroide[i] = new Asteroide();
       asteroide[i].inicia();
       };
+      asteroide[0].x = 550;
+      asteroide[0].y = 240;
+
       
       var buracoNegro = new BuracoNegro();
       var d;
@@ -91,14 +95,14 @@
                asteroide[i].inicia();
             
             };
-            
+
             if (asteroide[i].colisao(jogador)) {
-               if (jogador.direcao(asteroide[i]) < 0) {
+               var angdir = Math.acos(jogador.direcao(asteroide[i]))/GRAD_TO_RAD;
+               if (angdir > 30) {
                   boom.x = jogador.x;
                   boom.y = jogador.y;
                   boom.frame = 0;
                   boom.framel = 0;   
-                  console.log(jogador.direcao(asteroide[i]));         
                   jogador.inicia();
                }
                
