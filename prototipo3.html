@@ -34,6 +34,8 @@
       asteroidImg.src = "asteroid_strip64.png";
       var buracoNegroImg = new Image();
       buracoNegroImg.src = "blackhole.png";
+      var imagemBoom = new Image();
+      imagemBoom.src = "exp2_0.png";
 
 
 </script>
@@ -41,6 +43,7 @@
 <script src = "jogador.js"></script> 
 <script src="asteroide.js"></script>
 <script src="buraco_negro.js"></script>
+<script src="boom.js"></script>
 <script>
       var asteroide =[];
       for (var i = 0; i<4; i++)
@@ -68,13 +71,11 @@
          
          jogador.mover();
          if(buracoNegro.colisao(jogador)){
-            jogador.x = 600;
-            jogador.y = 300;
-            jogador.vx = 00;
-            jogador.vy = 00;
-            jogador.angulo = -90;
-            jogador.aceleracao = 0;
-
+            boom.x = jogador.x;
+            boom.y = jogador.y;
+            boom.frame = 0;
+            boom.framel = 0;              
+            jogador.inicia();
          }; 
 
          buracoNegro.desenhar(ctx);
@@ -83,20 +84,34 @@
          for (var i = 0; i<4; i++)
          {
             if(buracoNegro.colisao(asteroide[i])){
+               boom.x = asteroide[i].x;
+               boom.y = asteroide[i].y;
+               boom.frame = 0;
+               boom.framel = 0;                
                asteroide[i].inicia();
             
             };
+            
+            if (asteroide[i].colisao(jogador)) {
+               if (jogador.direcao(asteroide[i]) < 0) {
+                  boom.x = jogador.x;
+                  boom.y = jogador.y;
+                  boom.frame = 0;
+                  boom.framel = 0;   
+                  console.log(jogador.direcao(asteroide[i]));         
+                  jogador.inicia();
+               }
+               
+            }
 
-            asteroide[i].colidido = asteroide[i].colisao(jogador);
             asteroide[i].desenhar(ctx);
          };
-         
-         
 
+         boom.desenhar(ctx);
 
          tempo_anterior = tempo_atual;
-
       }
+
       window.setInterval(desenho, 1000/60);
    
       document.addEventListener("keydown", tecla_pressionada);
@@ -127,6 +142,13 @@
             jogador.aceleracao = 0;
             jogador.quadro = 0;
          }
+      }
+      function desenhaBoom(x, y, a){
+         ctx.save();
+         ctx.translate(x, y);
+         //ctx.rotate(a*2*Math.PI/360);
+         ctx.drawImage(imagemBoom,frame*64,framel*64,64, 64,-32,-32, 64, 64);
+         ctx.restore();
       }
          
          
