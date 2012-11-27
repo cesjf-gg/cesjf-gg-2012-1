@@ -7,15 +7,26 @@ function Asteroide(){
          this.vy = 0;
          this.raio = 30;
          this.colidido = false;
+         this.preso = false;
          this.quadro = 0;
          this.animacao = 10;
          this.desenhar = function(ctx){
             ctx.save();
          
             ctx.translate(this.x, this.y);
+            if(this.preso){
+               ctx.save();
+               ctx.rotate((jogador.angulo+90) * GRAD_TO_RAD);         
+            }
             ctx.drawImage(asteroidImg, Math.floor(this.quadro)*128, 0, 128, 128,
                       -this.raio, -this.raio, 2*this.raio, 2*this.raio);
-            this.quadro += this.animacao*dt;
+            if(this.preso){
+               ctx.restore();
+            }
+            
+            if(!this.preso){
+               this.quadro += this.animacao*dt;
+            }
             if(this.quadro>64){
                this.quadro = 0;
             }

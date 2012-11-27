@@ -8,6 +8,7 @@ var jogador = {
    vy: 0,
    raio: 15,
    quadro: 0,
+   asteroide: null,
    desenhar: function (ctx){
       ctx.save();
       ctx.translate(jogador.x, jogador.y);
@@ -16,8 +17,7 @@ var jogador = {
       ctx.drawImage(naveImg, 64*Math.floor(jogador.quadro), 33, 64, 47,
             -jogador.raio, -jogador.raio, jogador.raio*2, jogador.raio*2);
       
-      
-      if(true || desenhaLimites){
+      if(desenhaLimites){
          ctx.beginPath( );
          ctx.moveTo(0, -10);
          ctx.lineTo(8, 10);
@@ -39,10 +39,6 @@ var jogador = {
          ctx.closePath( );
          ctx.strokeStyle= "white";
          ctx.stroke();
-
-      }
-      ctx.restore();
-
         ctx.beginPath();
          ctx.moveTo(0,0);
          ctx.lineTo(50*this.vx, 0);
@@ -56,6 +52,10 @@ var jogador = {
          ctx.closePath( );
          ctx.strokeStyle= "red";
          ctx.stroke();
+
+      }
+      ctx.restore();
+
 
          ctx.restore();
    },
@@ -86,6 +86,11 @@ var jogador = {
       }
       if(this.x>640 - this.raio) {
          this.x = 640 - this.raio;
+      }
+      if(this.asteroide){
+         this.asteroide.x = this.x+1.0*(this.raio+this.asteroide.raio)*Math.cos(this.angulo * GRAD_TO_RAD);
+         this.asteroide.y = this.y+1.0*(this.raio+this.asteroide.raio)*Math.sin(this.angulo * GRAD_TO_RAD);
+         
       }
       
    },
