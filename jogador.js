@@ -96,12 +96,22 @@ var jogador = {
    },
 
    inicia: function() {
+      this.solta();
       this.x = 600;
       this.y = 300;
       this.angulo = -90;
       this.aceleracao = 0;
       this.vx = 0;
       this.vy = 0;
+      
+   },
+   solta: function(){
+      if(this.asteroide){
+         this.asteroide.vx = this.vx * 1.1/dt;
+         this.asteroide.vy = -this.vy * 1.1/dt;
+         this.asteroide.preso = false;
+         this.asteroide = null;
+      }
    },
 
    direcao: function(objeto) {

@@ -94,8 +94,11 @@
                boom.x = asteroide[i].x;
                boom.y = asteroide[i].y;
                boom.frame = 0;
-               boom.framel = 0;                
+               boom.framel = 0;
+               asteroide[i].preso = false;
+               jogador.asteroide = null;                
                asteroide[i].inicia();
+
             
             };
 
@@ -127,6 +130,11 @@
       document.addEventListener("keydown", tecla_pressionada);
       document.addEventListener("keyup", tecla_solta)
       function tecla_pressionada(evento){
+         if (evento.keyCode == 32) {
+            if (jogador.asteroide) {
+               jogador.solta();
+            }
+         }
          if (evento.keyCode == 39){
             jogador.vang = 120;
          } else if(evento.keyCode == 37){
@@ -136,7 +144,8 @@
             jogador.aceleracao =  1;
             jogador.quadro = 1;
          }  else if(evento.keyCode == 40){
-            jogador.aceleracao = 0;
+            jogador.aceleracao = -0.7;
+            jogador.quadro = 1;
          }             
       }
       function tecla_solta(evento){
