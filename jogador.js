@@ -107,8 +107,8 @@ var jogador = {
    },
    solta: function(){
       if(this.asteroide){
-         this.asteroide.vx = this.vx * 1.1/dt;
-         this.asteroide.vy = -this.vy * 1.1/dt;
+         this.asteroide.vx = (this.vx * 1.1 + 0.7 * Math.cos((this.angulo)* GRAD_TO_RAD))/dt;
+         this.asteroide.vy = ( - this.vy * 1.1 + 0.7 * Math.sin((this.angulo)* GRAD_TO_RAD))/dt;
          this.asteroide.preso = false;
          this.asteroide = null;
       }

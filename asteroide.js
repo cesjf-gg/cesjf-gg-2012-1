@@ -74,13 +74,19 @@ function Asteroide(){
             return d < (this.raio+alvo.raio); 
          };
 
-         this.inicia = function() {
+         this.inicia = function(i) {
+            this.ax = 0;
+            this.ay = 0;
+            this.vx = Math.random()*50 - 25;
+                        
             this.x = 100 + Math.random()*400;
-            if (i%2==0){ 
-               this.y = -50 - Math.random()*50;
+            if (i%2==0){
+               this.vy = Math.random()*50; 
+               this.y = 0 - Math.random()*1;
             }
             else{
-               this.y  = 530 + Math.random()*50;
+               this.vy = - Math.random()*50;
+               this.y  = 480 + Math.random()*1;
             }
             this.quadro = Math.random()*128;
             this.animacao = Math.random()*10+10;

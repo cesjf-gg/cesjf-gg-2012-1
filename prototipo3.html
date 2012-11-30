@@ -36,6 +36,8 @@
       buracoNegroImg.src = "blackhole.png";
       var imagemBoom = new Image();
       imagemBoom.src = "exp2_0.png";
+      var imagemGear = new Image();
+      imagemGear.src = "gears.png";
 
 
 </script>
@@ -47,10 +49,10 @@
 <script>
       var GRAD_TO_RAD = 2*Math.PI/360;
       var asteroide =[];
-      for (var i = 0; i<4; i++)
+      for (var i = 0; i<8; i++)
          {
       asteroide[i] = new Asteroide();
-      asteroide[i].inicia();
+      asteroide[i].inicia(i);
       };
       asteroide[0].x = 550;
       asteroide[0].y = 240;
@@ -58,6 +60,11 @@
       asteroide[1].x = 350;
       asteroide[1].y = 140;
 
+      engrenagem1 = {
+         x: 630,
+         y: 240,
+         angulo: 0
+      };
       
       var buracoNegro = new BuracoNegro();
       var d;
@@ -71,7 +78,7 @@
          
          ctx.strokeStyle = "white";
 
-         for (var i = 0; i<4; i++)
+         for (var i = 0; i<asteroide.length; i++)
          {
             asteroide[i].mover();
          };
@@ -88,7 +95,7 @@
          buracoNegro.desenhar(ctx);
          jogador.desenhar(ctx);
 
-         for (var i = 0; i<4; i++)
+         for (var i = 0; i<asteroide.length; i++)
          {
             if(buracoNegro.colisao(asteroide[i])){
                boom.x = asteroide[i].x;
@@ -97,7 +104,7 @@
                boom.framel = 0;
                asteroide[i].preso = false;
                jogador.asteroide = null;                
-               asteroide[i].inicia();
+               asteroide[i].inicia(i);
 
             
             };
@@ -110,17 +117,44 @@
                   boom.frame = 0;
                   boom.framel = 0;   
                   jogador.inicia();
+                  asteroide[i].inicia();
                }else{
                   asteroide[i].preso = true;
                   jogador.asteroide = asteroide[i];
                }
                
             }
-
+         
             asteroide[i].desenhar(ctx);
          };
+         
+         for (var i = 0; i < asteroide.length; i++) {
+            for (var j = i + 1; j < asteroide.length; j++) {
+               if (asteroide[i].colisao(asteroide[j])) {
+                  boom.x = asteroide[i].x;
+                  boom.y = asteroide[i].y;
+                  boom.frame = 0;
+                  boom.framel = 0;
+                  asteroide[i].inicia(i);
+                  asteroide[j].inicia(j);
+                  
+               }
+            }
+         }
+         
+         ctx.save();
+         ctx.translate(engrenagem1.x,engrenagem1.y);
+         ctx.rotate(-engrenagem1.angulo++*GRAD_TO_RAD);
+         ctx.drawImage(imagemGear, 0,0, 64, 64, -32,-32,64,64);
+         ctx.restore();
+         ctx.save();
+         ctx.translate(engrenagem1.x,engrenagem1.y+54);
+         ctx.rotate((22+engrenagem1.angulo++)*GRAD_TO_RAD);
+         ctx.drawImage(imagemGear, 0,0, 64, 64, -32,-32,64,64);
+         ctx.restore();
 
          boom.desenhar(ctx);
+
 
          tempo_anterior = tempo_atual;
       }
